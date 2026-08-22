@@ -16,7 +16,6 @@ import { taskService } from "../services/taskService";
 import type { Task, TaskStatus } from "../features/board/task.types";
 
 import { TaskModal, type CreateTaskForm } from "../features/board/TaskModal";
-import TaskCard from "../features/board/TaskCard";
 import { BoardColumn } from "../features/board/BoardColumn";
 import { TaskDrawer } from "../features/board/TaskDrawer";
 import { Plus } from "lucide-react";
@@ -43,7 +42,7 @@ const columns: {
   },
 ];
 
-export function TaskBoardPage() {
+export default function TaskBoardPage() {
   const queryClient = useQueryClient();
 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);

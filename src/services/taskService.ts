@@ -15,15 +15,6 @@ function isTaskStatus(status: string): status is TaskStatus {
   );
 }
 
-interface UpdateTaskInput {
-  title: string;
-  description: string;
-  status: TaskStatus;
-  priority: TaskPriority;
-  assigneeId: number | null;
-  dueDate: string | null;
-  sprintId: number;
-}
 
 function isTaskPriority(priority: string): priority is TaskPriority {
   return (

@@ -14,7 +14,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { login } from "../features/auth/auth.actions";
 import { useAuthStore } from "../features/auth/auth.store";
 
-export function LoginPage() {
+export default function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
 

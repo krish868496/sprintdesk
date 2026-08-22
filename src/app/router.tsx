@@ -1,13 +1,25 @@
+import { lazy, Suspense } from "react";
 import { createBrowserRouter, Navigate } from "react-router-dom";
-
-import { LoginPage } from "../pages/LoginPage";
-import { DashboardPage } from "../pages/DashboardPage";
-import { BoardPage } from "../pages/BoardPage";
 
 import { ProtectedRoute } from "../features/auth/ProtectedRoute";
 import { AppLayout } from "../components/layout/AppLayout";
-import { TaskBoardPage } from "../pages/TaskBoardPage";
-import { AnalyticsPage } from "../pages/AnalyticsPage";
+
+const LoginPage = lazy(() => import("../pages/LoginPage"));
+const DashboardPage = lazy(() => import("../pages/DashboardPage"));
+const TaskBoardPage = lazy(() => import("../pages/TaskBoardPage"));
+const AnalyticsPage = lazy(() => import("../pages/AnalyticsPage"));
+
+function PageLoader() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-slate-50">
+      <div className="text-sm font-medium text-slate-500">Loading...</div>
+    </div>
+  );
+}
+
+function LazyPage({ children }: { children: React.ReactNode }) {
+  return <Suspense fallback={<PageLoader />}>{children}</Suspense>;
+}
 
 export const router = createBrowserRouter([
   {
@@ -17,7 +29,11 @@ export const router = createBrowserRouter([
 
   {
     path: "/login",
-    element: <LoginPage />,
+    element: (
+      <LazyPage>
+        <LoginPage />
+      </LazyPage>
+    ),
   },
 
   {
@@ -28,15 +44,27 @@ export const router = createBrowserRouter([
         children: [
           {
             path: "/dashboard",
-            element: <DashboardPage />,
+            element: (
+              <LazyPage>
+                <DashboardPage />
+              </LazyPage>
+            ),
           },
           {
             path: "/analytics",
-            element: <AnalyticsPage />,
+            element: (
+              <LazyPage>
+                <AnalyticsPage />
+              </LazyPage>
+            ),
           },
           {
             path: "/board",
-            element: <TaskBoardPage />,
+            element: (
+              <LazyPage>
+                <TaskBoardPage />
+              </LazyPage>
+            ),
           },
         ],
       },

@@ -4,27 +4,6 @@ import { MoreHorizontal } from "lucide-react";
 import type { Task, TaskStatus } from "./task.types";
 import TaskCard from "./TaskCard";
 
-interface BoardColumnProps {
-  id: TaskStatus;
-  title: string;
-  tasks: Task[];
-  onTaskClick?: (task: Task) => void;
-}
-
-const columnStyles: Record<TaskStatus, string> = {
-  backlog: "bg-slate-100/80",
-  "in-progress": "bg-blue-50/70",
-  review: "bg-amber-50/70",
-  done: "bg-emerald-50/70",
-};
-
-const dotStyles: Record<TaskStatus, string> = {
-  backlog: "bg-slate-400",
-  "in-progress": "bg-blue-500",
-  review: "bg-amber-500",
-  done: "bg-emerald-500",
-};
-
 export function BoardColumn({
   column,
   tasks,

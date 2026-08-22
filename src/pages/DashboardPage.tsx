@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 
 import { taskService } from "../services/taskService";
 
-export function DashboardPage() {
+export default function DashboardPage() {
   const navigate = useNavigate();
 
   const {
@@ -84,7 +84,7 @@ export function DashboardPage() {
 
   const reviewTasks = tasks.filter((task) => task.status === "review").length;
 
-  const todoTasks = tasks.filter((task) => task.status === "todo").length;
+  const todoTasks = tasks.filter((task) => task.status === "backlog").length;
 
   const completionRate =
     totalTasks === 0 ? 0 : Math.round((completedTasks / totalTasks) * 100);
