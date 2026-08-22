@@ -1,75 +1,175 @@
-# React + TypeScript + Vite
+# SprintDesk
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A production-oriented sprint management dashboard built with React, TypeScript, TanStack Query, Zustand, Tailwind CSS, and @dnd-kit.
 
-Currently, two official plugins are available:
+SprintDesk provides a Kanban-style workspace for managing sprint tasks, tracking progress, and analyzing sprint data.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Live Demo
 
-## React Compiler
+## Demo Login
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Username: `emilys`
+Password: `emilyspass`
 
-## Expanding the ESLint configuration
+🔗 Live Application: [YOUR_VERCEL_URL](https://sprintdesk-alpha.vercel.app/login)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Authentication
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Login using DummyJSON authentication API
+- Protected application routes
+- Redirect unauthenticated users to `/login`
+- Prevent authenticated users from accessing `/login`
+- Session persistence across page refresh
+- Logout functionality
+- Access token handling
+- Refresh token persistence
+- Token refresh and failed-request retry handling
 
-```
+### Kanban Sprint Board
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Four sprint columns:
+  - Backlog
+  - In Progress
+  - Review
+  - Done
+- Fetch tasks through a dedicated service layer
+- Drag and drop using `@dnd-kit/core`
+- Move tasks between columns
+- Reorder tasks within columns
+- Create tasks
+- Edit task details
+- Delete tasks with confirmation
+- Dynamic task counts
+- Task priority display
+- Assignee display
+- Due date display
+- Task details side drawer
+- Comments
+- Persistent board state using Zustand + localStorage
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Analytics
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+The analytics dashboard provides:
 
-```
+- Sprint velocity
+- Task status distribution
+- Priority breakdown
+- Completion trend
+
+Charts are derived from application task data rather than hardcoded chart values.
+
+### Notifications
+
+- Polls JSONPlaceholder for new notifications
+- Unread notification count
+- Read/unread notification state
+- Mark notification as read
+- Mark all notifications as read
+- Notification persistence using Zustand
+- Polling pauses when browser tab is hidden
+- Polling resumes when browser tab becomes visible
+- Toast notification for new notifications
+
+### Design System
+
+Reusable UI components built using Tailwind CSS:
+
+- Button
+- Input
+- Select
+- Modal
+- Toast
+- DataTable
+- Skeleton / Loading states
+
+Components are designed to be reusable, responsive, and accessible.
+
+### Accessibility
+
+- Semantic HTML
+- Accessible form labels
+- Keyboard-friendly interactions
+- Focus management
+- Meaningful ARIA labels
+- Responsive layouts
+- Accessible loading and error states
+
+### Performance
+
+- Route-level code splitting using `React.lazy`
+- `Suspense` loading states
+- Memoization where appropriate
+- TanStack Query caching
+- Avoid unnecessary global state
+- Responsive rendering
+
+### Testing
+
+Unit and component tests cover:
+
+- Toast functionality
+- Zustand board store
+- Adding tasks
+- Moving tasks
+- Deleting tasks
+- Authentication interceptor
+- Token refresh and retry behavior
+
+---
+
+# Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| React 18+ | UI |
+| TypeScript | Type safety |
+| Vite | Build tooling |
+| React Router | Routing |
+| TanStack Query v5 | Server state |
+| Zustand | Application/client state |
+| Tailwind CSS | Styling |
+| @dnd-kit/core | Drag and drop |
+| Recharts | Data visualization |
+| Vitest | Testing |
+| React Testing Library | Component testing |
+| Lucide React | Icons |
+
+### APIs
+
+- DummyJSON — authentication and token refresh
+- JSONPlaceholder — simulated notification polling
+- Mock JSON data — application task, sprint, user, comment, and initial notification data
+
+---
+
+# Architecture
+
+SprintDesk separates server state, application state, local component state, and API/data access.
+
+```text
+                    React UI
+                       │
+                       ▼
+              Components / Pages
+                       │
+             ┌─────────┴─────────┐
+             │                   │
+             ▼                   ▼
+      TanStack Query          Zustand
+      Server State          Client State
+             │                   │
+             └─────────┬─────────┘
+                       │
+                       ▼
+                 Service Layer
+                       │
+                       ▼
+                 Data Source
+              ┌────────┼────────┐
+              │        │        │
+              ▼        ▼        ▼
+          Mock JSON DummyJSON JSONPlaceholder
